@@ -61,7 +61,7 @@ def simulation(task_list,workers, scheduler):
     sumOfTAT = 0
     number_tasks = 0
 
-    scheduled_tasks = scheduler.schedule(task_list, worker_list)
+    scheduled_tasks = scheduler.schedule(task_list, workers)
 
 
     for idx, worker_tasks in enumerate(scheduled_tasks):
@@ -69,51 +69,61 @@ def simulation(task_list,workers, scheduler):
             number_tasks += len(worker_tasks)
             sumOfTAT += len(worker_tasks) * workers[idx].compute_mTAT(worker_tasks)
     return sumOfTAT/number_tasks
-    
-if __name__ == "__main__":
-    # Simulation configuration
-    worker_speeds = [1, 1, 1, 1,1, 1, 1, 1,1, 1, 1, 1,1, 1, 1, 1,1, 1, 1, 1,1, 1, 1, 1,1, 1, 1, 1,1, 1, 1, 1]  # Speeds of workers
-    num_workers = len(worker_speeds)  # Number of workers
-    worker_list = [Worker(speed) for speed in worker_speeds]  # Generating workers with predefined speeds
 
-    max_num_tasks = 100 # minimum of 50
+def run_simulation(worker_speeds, max_num_tasks, num_simulations, scheduler, random_seed):
+    # Initialize random
+    random.seed(random_seed)
+
+    # Initialize workers
+    worker_list = [Worker(speed) for speed in worker_speeds]
+
+    # Varying number of tasks
+    num_tasks_list = list(range(50, max_num_tasks + 1, 5))
+    avg_results = []
+
+    for num_tasks in num_tasks_list:
+        task_list = [Task(random.randint(1, 100)) for _ in range(num_tasks)]  # Generating random tasks
+
+        simulation_results = []
+
+        # Generate a random seed for this simulation
+        random_seed = random.randint(0, 1000000)
+        random.seed(random_seed)
+
+        for _ in range(num_simulations):
+            # Perform simulations for the scheduler
+            result = simulation(task_list, worker_list, scheduler)
+            simulation_results.append(result)
+
+        avg_result = sum(simulation_results) / len(simulation_results)
+        avg_results.append(avg_result)
+
+    return num_tasks_list, avg_results
+
+
+if __name__ == "__main__":
+
+    # Simulation configuration
+    worker_speeds = [1] * 32  # Speeds of workers
+    max_num_tasks = 100  # maximum number of tasks
     num_simulations = 10
+
+    # Generate a random seed
+    random_seed = random.randint(1, 1000)
 
     # Initialize schedulers
     fifo_scheduler = FIFO_Scheduler()
     task_estimator_scheduler = TaskEstimator_Scheduler()
 
-    # How relevant is the scheduling complexity of the algorithm
-    complexity_coefficient = 0.01
+    # Run simulation with FIFO Scheduler
+    num_tasks_list_fifo, avg_results_fifo = run_simulation(worker_speeds, max_num_tasks, num_simulations, fifo_scheduler,random_seed)
 
-    # Varying number of tasks
-    num_tasks_list = list(range(50, max_num_tasks + 1, 5))
-    avg_results_fifo = []
-    avg_results_task_estimator = []
-
-    for num_tasks in num_tasks_list:
-        task_list = [Task(random.randint(1, 100)) for _ in range(num_tasks)]  # Generating random tasks
-
-        fifo_simulation_results = []
-        task_estimator_simulation_results = []
-
-        for _ in range(num_simulations):
-            # Perform simulations for both schedulers
-            fifo_result = simulation(task_list, worker_list, fifo_scheduler)
-            fifo_simulation_results.append(fifo_result)
-
-            task_estimator_result = simulation(task_list, worker_list, task_estimator_scheduler)
-            task_estimator_simulation_results.append(task_estimator_result)
-
-        avg_fifo_result = sum(fifo_simulation_results) / len(fifo_simulation_results)
-        avg_results_fifo.append(avg_fifo_result)
-
-        avg_task_estimator_result = sum(task_estimator_simulation_results) / len(task_estimator_simulation_results)
-        avg_results_task_estimator.append(avg_task_estimator_result)
+    # Run simulation with Task Estimator Scheduler
+    num_tasks_list_task_estimator, avg_results_task_estimator = run_simulation(worker_speeds, max_num_tasks, num_simulations, task_estimator_scheduler,random_seed)
 
     # Plotting
-    plt.plot(num_tasks_list, avg_results_fifo, marker='o', label='FIFO Scheduler')
-    plt.plot(num_tasks_list, avg_results_task_estimator, marker='o', label='Task Estimator Scheduler')
+    plt.plot(num_tasks_list_fifo, avg_results_fifo, marker='o', label='FIFO Scheduler')
+    plt.plot(num_tasks_list_task_estimator, avg_results_task_estimator, marker='o', label='Task Estimator Scheduler')
     plt.title('Average Simulation TAT vs Number of Tasks')
     plt.xlabel('Number of Tasks')
     plt.ylabel('Average TA Time Result')
