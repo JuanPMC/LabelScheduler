@@ -1,7 +1,7 @@
 import random
 
-from sumulationObjects.Worker import Worker
-from sumulationObjects.Task import Task
+from simulationObjects.Worker import Worker
+from simulationObjects.Task import Task
 
 def simulation(task_list,workers, scheduler):
     sumOfTAT = 0
