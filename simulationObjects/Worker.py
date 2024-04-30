@@ -12,3 +12,9 @@ class Worker:
             sum_TAT += total_duration + self.computeTime(task)
             total_duration += self.computeTime(task)
         return sum_TAT/len(tasks)
+        
+    def compute_duration(self,tasks):
+        total_duration = 0
+        for task in tasks:
+            total_duration += self.computeTime(task)
+        return total_duration

@@ -12,8 +12,8 @@ from simulationObjects.sim_utils import run_simulation
 if __name__ == "__main__":
 
     # Simulation configuration
-    worker_speeds = [1] * 8
-    max_num_tasks = 100  # maximum number of tasks
+    worker_speeds = [1] * 100 + [2] * 100
+    max_num_tasks = 1000  # maximum number of tasks
     num_simulations = 10
 
     # Generate a random seed
@@ -46,17 +46,17 @@ if __name__ == "__main__":
     # num_tasks_list_simple, avg_results_simple = run_simulation(worker_speeds, max_num_tasks, num_simulations, simple_scheduler,random_seed)
 
     # Plotting
-    plt.plot(num_tasks_list_fifo, avg_results_fifo, marker='o', label='FIFO Scheduler')
-    plt.plot(num_tasks_list_task_estimator, avg_results_task_estimator, marker='o', label='Task Estimator Scheduler')
-    plt.plot(num_tasks_list_task_estimator_homo, avg_results_task_estimator_homo, marker='o', label='Task Estimator Heterogeneus Scheduler')
-    plt.plot(num_tasks_list_mtat, avg_results_mtat, marker='o', label='mTAT')
+    plt.plot(num_tasks_list_fifo, avg_thruputs_fifo, marker='o', label='FIFO Scheduler')
+    plt.plot(num_tasks_list_task_estimator, avg_thruputs_task_estimator, marker='o', label='Task Estimator Scheduler')
+    plt.plot(num_tasks_list_task_estimator_homo, task_estimator_homo, marker='o', label='Task Estimator Heterogeneus Scheduler')
+    plt.plot(num_tasks_list_mtat, avg_thruputs_mtat, marker='o', label='mTAT')
     #plt.plot(num_tasks_list_optimal, avg_results_optimal, marker='o', label='Optimal')
 
   #  plt.plot(num_tasks_list_simple, avg_results_simple, marker='o', label='Simple loop')
 
-    plt.title('Average Simulation TAT vs Number of Tasks')
+    plt.title('Average Simulation Throughput vs Number of Tasks')
     plt.xlabel('Number of Tasks')
-    plt.ylabel('Average TA Time Result')
+    plt.ylabel('Average Throughput Result')
     plt.legend()
     plt.grid(True)
     plt.show()
