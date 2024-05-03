@@ -1,4 +1,4 @@
-class TaskEstimatorHomo_Scheduler():
+class LoadEstimatorHomo_Scheduler():
     def complexity(self, n):
         return n
     def constant_penalties(self):

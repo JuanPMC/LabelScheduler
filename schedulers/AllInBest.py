@@ -1,4 +1,4 @@
-class SimpleLoop_Scheduler():
+class AllInBest():
     def complexity(self, n):
         return n
     def constant_penalties(self):

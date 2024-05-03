@@ -1,4 +1,4 @@
-class TaskEstimator_Scheduler():
+class LoadEstimator_Scheduler():
     def complexity(self, n):
         return n
     def constant_penalties(self):
