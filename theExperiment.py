@@ -32,10 +32,10 @@ if __name__ == "__main__":
     # Run simulation with FIFO Scheduler
     num_tasks_list_fifo, avg_results_fifo, avg_thruputs_fifo = run_simulation(worker_speeds, max_num_tasks, num_simulations, fifo_scheduler,random_seed)
 
-    # Run simulation with Task Estimator Scheduler
+    # Run simulation with Load Estimator Scheduler
     num_tasks_list_task_estimator, avg_results_task_estimator, avg_thruputs_task_estimator = run_simulation(worker_speeds, max_num_tasks, num_simulations, load_estimator_scheduler,random_seed)
 
-    # Run simulation with Task Estimator Homo Scheduler
+    # Run simulation with Load Estimator H.Scheduler
     num_tasks_list_task_estimator_homo, avg_results_task_estimator_homo,task_estimator_homo = run_simulation(worker_speeds, max_num_tasks, num_simulations, load_estimator_scheduler_homo,random_seed)
 
     # Run simulation with thruput
@@ -46,9 +46,6 @@ if __name__ == "__main__":
     
     # Run simulation with optimal
     num_tasks_list_optimal, avg_results_optimal, avg_thruputs_optimal  = run_simulation(worker_speeds, max_num_tasks, num_simulations, optima_sch,random_seed)
-
-    # # Run simulation with SimpleLoop
-    # num_tasks_list_simple, avg_results_simple = run_simulation(worker_speeds, max_num_tasks, num_simulations, all_in_best,random_seed)
 
     # Plotting
     plt.plot(num_tasks_list_fifo, avg_thruputs_fifo, marker='o', label='FIFO Scheduler')
